@@ -1,16 +1,24 @@
 #!/usr/bin/env python3
-"""Task 1: Simple pagination.
+""" task 1 Simple pagination
 """
 
+from typing import Tuple, List
 import csv
 import math
-from typing import List, Tuple
 
 
 def index_range(page: int, page_size: int) -> Tuple[int, int]:
-    """Retrieves the index range from a given page and page size."""
+    """
+    Args:
+        page (int): The current page number.
+        page_size (int): The number of items per page.
 
-    return ((page - 1) * page_size, ((page - 1) * page_size) + page_size)
+    Returns:
+        Tuple[int, int]: A tuple containing the start index and end index.
+    """
+    start_index = (page - 1) * page_size
+    end_index = start_index + page_size
+    return (start_index, end_index)
 
 
 class Server:
@@ -32,11 +40,24 @@ class Server:
         return self.__dataset
 
     def get_page(self, page: int = 1, page_size: int = 10) -> List[List]:
-        """Retrieves a page of data."""
-        assert type(page) == int and type(page_size) == int
-        assert page > 0 and page_size > 0
-        start, end = index_range(page, page_size)
-        data = self.dataset()
-        if start > len(data):
+
+        # Use assert to verify that both arguments are integers greater than 0.
+        assert isinstance(page, int) and page > 0
+        assert isinstance(page_size, int) and page_size > 0
+
+        # Use index_range to find the correct indexes
+        idx_results = index_range(page, page_size=page_size)
+        # Use assert to verify that both arguments are integers greater than 0.
+        assert isinstance(page, int) and page > 0
+        assert isinstance(page_size, int) and page_size > 0
+
+        # Use index_range to find the correct indexes
+        idx_results = index_range(page, page_size=page_size)
+        if (idx_results[0] > len(self.dataset()) or
+                idx_results[1] > len(self.dataset())):
             return []
-        return data[start:end]
+
+        dataset_result = self.dataset()
+
+        page_items = dataset_result[idx_results[0]:idx_results[1]]
+        return page_items
