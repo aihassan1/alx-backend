@@ -48,10 +48,12 @@ class Server:
             page_size (int): The number of items per page (default is 10).
 
         Returns:
-            List[List]: A list of lists representing the items on the requested page.
+            List[List]: A list of lists representing
+            the items on the requested page.
 
         Raises:
-            AssertionError: If either `page` or `page_size` is not an integer greater than 0.
+            AssertionError: If either `page` or `page_size`
+            is not an integer greater than 0.
 
         """
         # Use assert to verify that both arguments are integers greater than 0.
