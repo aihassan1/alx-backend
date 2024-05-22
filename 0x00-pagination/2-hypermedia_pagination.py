@@ -89,7 +89,7 @@ class Server:
         info["page"] = page
         info["data"] = page_data
         info["next_page"] = page + 1 if end < len(self.__dataset) else None
-        info["prev_page"] = page - 1 if start - 1 > 0 else None
+        info["prev_page"] = page - 1 if start > 0 else None
         info["total_pages"] = total_pages
 
         return info
