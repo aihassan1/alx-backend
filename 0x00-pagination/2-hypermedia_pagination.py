@@ -1,16 +1,24 @@
 #!/usr/bin/env python3
-"""Task 2: Hypermedia pagination
+""" task 1 Simple pagination
 """
 
+from typing import Tuple, List
 import csv
 import math
-from typing import Dict, List, Tuple
 
 
 def index_range(page: int, page_size: int) -> Tuple[int, int]:
-    """Retrieves the index range from a given page and page size."""
+    """
+    Args:
+        page (int): The current page number.
+        page_size (int): The number of items per page.
 
-    return ((page - 1) * page_size, ((page - 1) * page_size) + page_size)
+    Returns:
+        Tuple[int, int]: A tuple containing the start index and end index.
+    """
+    start_index = (page - 1) * page_size
+    end_index = start_index + page_size
+    return (start_index, end_index)
 
 
 class Server:
@@ -32,25 +40,31 @@ class Server:
         return self.__dataset
 
     def get_page(self, page: int = 1, page_size: int = 10) -> List[List]:
-        """Retrieves a page of data."""
-        assert type(page) == int and type(page_size) == int
-        assert page > 0 and page_size > 0
-        start, end = index_range(page, page_size)
-        data = self.dataset()
-        if start > len(data):
-            return []
-        return data[start:end]
+        """
+        Retrieves a specific page of data from the dataset.
 
-    def get_hyper(self, page: int = 1, page_size: int = 10) -> Dict:
-        """Retrieves information about a page."""
-        data = self.get_page(page, page_size)
-        start, end = index_range(page, page_size)
-        total_pages = math.ceil(len(self.__dataset) / page_size)
-        return {
-            "page_size": len(data),
-            "page": page,
-            "data": data,
-            "next_page": page + 1 if end < len(self.__dataset) else None,
-            "prev_page": page - 1 if start > 0 else None,
-            "total_pages": total_pages,
-        }
+        Args:
+            page (int): The page number to retrieve (default is 1).
+            page_size (int): The number of items per page (default is 10).
+
+        Returns:
+            List[List]: A list of lists representing
+            the items on the requested page.
+
+        Raises:
+            AssertionError: If either `page` or `page_size`
+            is not an integer greater than 0.
+
+        """
+        # Use assert to verify that both arguments are integers greater than 0.
+        assert isinstance(page, int) and page > 0
+        assert isinstance(page_size, int) and page_size > 0
+
+        start_idx, end_idx = index_range(page, page_size=page_size)
+        if start_idx > len(self.dataset()) or end_idx > len(self.dataset()):
+            return []
+
+        dataset_result = self.dataset()
+
+        page_items = dataset_result[start_idx:end_idx]
+        return page_items

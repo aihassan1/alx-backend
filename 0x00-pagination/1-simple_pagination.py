@@ -60,16 +60,11 @@ class Server:
         assert isinstance(page, int) and page > 0
         assert isinstance(page_size, int) and page_size > 0
 
-        idx_results = index_range(page, page_size=page_size)
-        assert isinstance(page, int) and page > 0
-        assert isinstance(page_size, int) and page_size > 0
-
-        idx_results = index_range(page, page_size=page_size)
-        if (idx_results[0] > len(self.dataset()) or
-                idx_results[1] > len(self.dataset())):
+        start_idx, end_idx = index_range(page, page_size=page_size)
+        if start_idx > len(self.dataset()) or end_idx > len(self.dataset()):
             return []
 
         dataset_result = self.dataset()
 
-        page_items = dataset_result[idx_results[0]:idx_results[1]]
+        page_items = dataset_result[start_idx:end_idx]
         return page_items
