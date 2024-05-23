@@ -7,32 +7,38 @@ from base_caching import BaseCaching
 
 
 class MRUCache(BaseCaching):
-    """A class `MRUCache` that inherits
-       from `BaseCaching` and is a caching system
-    """
-    def __init__(self):
-        """Initializes the cache.
-        """
-        super().__init__()
-        self.cache_data = OrderedDict()
+    """A class `MRUCache` inherits from `BaseCaching`"""
 
-    def put(self, key, item):
-        """Adds an item in the cache.
-        """
-        if key is None or item is None:
-            return
-        if key not in self.cache_data:
-            if len(self.cache_data) + 1 > BaseCaching.MAX_ITEMS:
-                mru_key, _ = self.cache_data.popitem(False)
-                print("DISCARD:", mru_key)
-            self.cache_data[key] = item
-            self.cache_data.move_to_end(key, last=False)
-        else:
-            self.cache_data[key] = item
+    def __init__(self):
+        """Initializes the cache."""
+        super().__init__()
+        self.cache_order = []
 
     def get(self, key):
-        """Retrieves an item by key.
-        """
-        if key is not None and key in self.cache_data:
-            self.cache_data.move_to_end(key, last=False)
-        return self.cache_data.get(key, None)
+        """Add an item in the cache"""
+
+        if key is None:
+            return None
+        if self.cache_data.get(key, None) is not None:
+            if key in self.cache_order:
+                self.cache_order.remove(key)
+            self.cache_order.insert(0, key)
+            return self.cache_data.get(key, None)
+        else:
+            return None
+
+    def put(self, key, item):
+        """put an item"""
+        if key is None or item is None:
+            pass
+        else:
+            if key in self.cache_order:
+                self.cache_order.remove(key)
+
+            if len(self.cache_order) >= BaseCaching.MAX_ITEMS:
+                print(f"DISCARD: {self.cache_order[0]}")
+                del self.cache_data[self.cache_order[0]]
+                self.cache_order.pop(-1)
+
+            self.cache_order.insert(0, key)
+            self.cache_data[key] = item
