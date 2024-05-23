@@ -31,14 +31,9 @@ class LRUCache(BaseCaching):
                 self.cache_order.remove(key)
 
             if len(self.cache_order) >= BaseCaching.MAX_ITEMS:
-                print(
-                    f"DISCARD: {self.cache_order[-1]} , value :{ self.cache_data[self.cache_order[-1]]} "
-                )
+                print(f"DISCARD: {self.cache_order[-1]}")
                 del self.cache_data[self.cache_order[-1]]
                 self.cache_order.pop(-1)
-                self.cache_order.insert(0, key)
-                self.cache_data[key] = item
 
-            else:
-                self.cache_order.insert(0, key)
-                self.cache_data[key] = item
+            self.cache_order.insert(0, key)
+            self.cache_data[key] = item
