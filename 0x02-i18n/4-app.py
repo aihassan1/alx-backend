@@ -1,15 +1,23 @@
 #!/usr/bin/env python3
 """
-    Contains a basic flask app displaying 'Welcome to Holberton' on
-    a single route '/'
+This Python script sets up a basic Flask web application with
+internationalization (i18n) support using Flask-Babel.
 """
+
 
 from flask import Flask, render_template, request
 from flask_babel import Babel, _
 
 
 class Config:
-    """configuration for babel"""
+    """
+    Configuration class for Flask application.
+
+    Attributes:
+        LANGUAGES (list): The languages supported by the application.
+        BABEL_DEFAULT_LOCALE (str): The default language locale.
+        BABEL_DEFAULT_TIMEZONE (str): The default timezone.
+    """
 
     LANGUAGES = ["en", "fr"]
     BABEL_DEFAULT_LOCALE = "en"
@@ -25,8 +33,12 @@ babel = Babel(app)
 
 @babel.localeselector
 def get_locale() -> str:
-    """this method checks the URL parameter for locale variable
-    and force the Locale of the app"""
+    """
+    Determine the best match for user's accepted languages.
+
+    Returns:
+        str: The best language match from accepted languages.
+    """
     locale = request.args.get("locale")
     if locale and locale in app.config["LANGUAGES"]:
         return locale
@@ -36,10 +48,15 @@ def get_locale() -> str:
 
 @app.route("/")
 def home() -> str:
-    """this route renders 0-index.html template"""
+    """
+    Render the home page.
 
+    Returns:
+        str: HTML of the home page.
+    """
     return render_template("4-index.html")
 
 
 if __name__ == "__main__":
+    """test"""
     app.run(debug=True)
