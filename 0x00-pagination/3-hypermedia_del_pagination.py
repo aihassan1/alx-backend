@@ -32,29 +32,24 @@ class Server:
         if self.__indexed_dataset is None:
             dataset = self.dataset()
             truncated_dataset = dataset[:1000]
-            self.__indexed_dataset = {i: dataset[i] for i in range(len(
-                dataset))}
+            self.__indexed_dataset = {i: dataset[i] for i in range(len(dataset))}
         return self.__indexed_dataset
 
     def get_hyper_index(self, index: int = None, page_size: int = 10) -> Dict:
         """
-        The goal here is that if between two queries,
-        certain rows are removed from the dataset, the user
-        does not miss items from dataset when changing page.
-        Args:
-            index (int): start index of the current page
-            page_size (int): size of items required in current page
-        Returns:
-            Dict[int, int|List[List]|None]: a dict of the following:
-                * index, next_index, page_size, data
+        The method should return a dictionary with the following key-value pairs:
+        index: the current start index of the return page.
+        next_index: the next index to query with.
+        page_size: the current page size
+        data: the actual page of the dataset
         """
+
         focus = []
         dataset = self.indexed_dataset()
         index = 0 if index is None else index
         keys = sorted(dataset.keys())
         assert index >= 0 and index <= keys[-1]
-        [focus.append(
-            i) for i in keys if i >= index and len(focus) <= page_size]
+        [focus.append(i) for i in keys if i >= index and len(focus) <= page_size]
         data = [dataset[v] for v in focus[:-1]]
         next_index = focus[-1] if len(focus) - page_size == 1 else None
         return {
