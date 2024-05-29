@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
-'''Task 4: Force locale with URL parameter
-'''
+"""Task 4: Force locale with URL parameter
+"""
 
 from flask import Flask, render_template, request
 from flask_babel import Babel
 
 
 class Config:
-    '''Config class'''
+    """Config class"""
 
     DEBUG = True
     LANGUAGES = ["en", "fr"]
@@ -28,20 +28,21 @@ def get_locale() -> str:
     Returns:
         str: best match
     """
-    locale = request.args.get('locale')
-    if locale in app.config['LANGUAGES']:
+    locale = request.args.get("locale")
+    if locale in app.config["LANGUAGES"]:
         return locale
-    return request.accept_languages.best_match(app.config['LANGUAGES'])
+    return request.accept_languages.best_match(app.config["LANGUAGES"])
 
 
-@app.route('/')
+@app.route("/")
 def index() -> str:
-    '''default route
+    """default route
 
     Returns:
         html: homepage
-    '''
+    """
     return render_template("4-index.html")
+
 
 # uncomment this line and comment the @babel.localeselector
 # you get this error:

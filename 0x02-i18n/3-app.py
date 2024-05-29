@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
-'''Task 2: Get locale from request
-'''
+"""Task 2: Get locale from request
+"""
 
 from flask import Flask, render_template, request
 from flask_babel import Babel
 
 
 class Config:
-    '''Config class'''
+    """Config class"""
 
     DEBUG = True
     LANGUAGES = ["en", "fr"]
@@ -28,17 +28,18 @@ def get_locale() -> str:
     Returns:
         str: best match
     """
-    return request.accept_languages.best_match(app.config['LANGUAGES'])
+    return request.accept_languages.best_match(app.config["LANGUAGES"])
 
 
-@app.route('/')
+@app.route("/")
 def index() -> str:
-    '''default route
+    """default route
 
     Returns:
         html: homepage
-    '''
+    """
     return render_template("3-index.html")
+
 
 # uncomment this line and comment the @babel.localeselector
 # you get this error:
