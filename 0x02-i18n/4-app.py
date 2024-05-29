@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
 """
-This Python script sets up a basic Flask web application with
-internationalization (i18n) support using Flask-Babel.
+    Contains a basic flask app displaying 'Welcome to Holberton' on
+    a single route '/'
 """
-
 
 from flask import Flask, render_template, request
 from flask_babel import Babel, _
@@ -58,5 +57,4 @@ def home() -> str:
 
 
 if __name__ == "__main__":
-    """test"""
     app.run(debug=True)
