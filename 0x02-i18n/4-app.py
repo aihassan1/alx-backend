@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-This Python script sets up a basic Flask web application with
-internationalization (i18n) support using Flask-Babel.
+    Contains a basic flask app displaying 'Welcome to Holberton' on
+    a single route '/'
 """
 
 from flask import Flask, render_template, request
@@ -9,14 +9,7 @@ from flask_babel import Babel, _
 
 
 class Config:
-    """
-    Configuration class for Flask application.
-
-    Attributes:
-        LANGUAGES (list): The languages supported by the application.
-        BABEL_DEFAULT_LOCALE (str): The default language locale.
-        BABEL_DEFAULT_TIMEZONE (str): The default timezone.
-    """
+    """configuration for babel"""
 
     LANGUAGES = ["en", "fr"]
     BABEL_DEFAULT_LOCALE = "en"
@@ -32,12 +25,8 @@ babel = Babel(app)
 
 @babel.localeselector
 def get_locale() -> str:
-    """
-    Determine the best match for user's accepted languages.
-
-    Returns:
-        str: The best language match from accepted languages.
-    """
+    """this method checks the URL parameter for locale variable
+    and force the Locale of the app"""
     locale = request.args.get("locale")
     if locale and locale in app.config["LANGUAGES"]:
         return locale
@@ -46,17 +35,11 @@ def get_locale() -> str:
 
 
 @app.route("/")
-def index() -> str:
-    """
-    Render the home page.
+def home() -> str:
+    """this route renders 0-index.html template"""
 
-    Returns:
-        str: HTML of the home page.
-    """
     return render_template("4-index.html")
 
 
 if __name__ == "__main__":
-    host = getenv("API_HOST", "0.0.0.0")
-    port = getenv("API_PORT", "5000")
-    app.run(host=host, port=port)
+    app.run(debug=True)
