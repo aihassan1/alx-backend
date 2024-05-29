@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""task 3"""
+"""task 3 This Python script sets up a basic Flask web application with
+(i18n) support using Flask-Babel."""
 from flask import Flask, render_template, request
 from flask_babel import Babel, _
 
@@ -20,17 +21,17 @@ babel = Babel(app)
 
 
 @babel.localeselector
-def get_locale():
-    """get locale"""
+def get_locale() -> str:
+    """get locale for a page"""
     return request.accept_languages.best_match(app.config["LANGUAGES"])
 
 
 @app.route("/")
-def home():
+def home() -> str:
     """home page"""
     title = _("home_title")
     header = _("home_header")
-    return render_template("index.html", title=title, header=header)
+    return render_template("3-index.html", title=title, header=header)
 
 
 if __name__ == "__main__":
