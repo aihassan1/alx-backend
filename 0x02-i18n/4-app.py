@@ -3,6 +3,7 @@
 This Python script sets up a basic Flask web application with
 internationalization (i18n) support using Flask-Babel.
 """
+
 from flask import Flask, render_template, request
 from flask_babel import Babel, _
 
@@ -45,7 +46,7 @@ def get_locale() -> str:
 
 
 @app.route("/")
-def home() -> str:
+def index() -> str:
     """
     Render the home page.
 
