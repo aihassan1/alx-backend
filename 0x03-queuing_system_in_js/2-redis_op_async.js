@@ -1,5 +1,5 @@
 import redis from 'redis';
-const promisify = require('util').promisify;
+import { promisify } from 'util';
 
 import { utils } from 'mocha';
 const client = redis.createClient();
@@ -14,7 +14,7 @@ function setNewSchool(schoolName, value) {
   client.set(schoolName, value, redis.print);
 }
 
-const getSchool = promisify(client.get);
+const getSchool = promisify(client.get.bind(client));
 
 async function displaySchoolValue(schoolName) {
   try {
